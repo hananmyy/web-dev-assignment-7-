@@ -1,0 +1,145 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <title>Admin Dashboard</title>
+  </head>
+  <body>
+    <nav>
+      <h4>Telemedicine Admin Dashboard</h4>
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/admin-dashboard">Dashboard</a></li>
+        <li><a href="/auth/logout">Logout</a></li>
+      </ul>
+    </nav>
+
+    <div class="container mt-4">
+      <h2>Manage Doctors</h2>
+
+      <!-- Form to Add a New Doctor -->
+      <div class="card mb-4">
+        <div class="card-header">Add New Doctor</div>
+        <div class="card-body">
+          <form action="/admin/add-doctor" method="POST">
+            <div class="form-group">
+              <label for="doctorFirstName">First Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="doctorFirstName"
+                name="first_name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="doctorLastName">Last Name</label>
+              <input
+                type="text"
+                class="form-control"
+                id="doctorLastName"
+                name="last_name"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="doctorEmail">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                id="doctorEmail"
+                name="email"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                id="password"
+                name="password"
+                required
+              />
+            </div>
+            <button type="submit" class="btn btn-primary">Add Doctor</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- List of Existing Doctors -->
+      <h3>Existing Doctors</h3>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Specialization</th>
+            <th>Availability</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each doctors}}
+            <!-- Assuming 'doctors' is passed from the server -->
+            <tr>
+              <td>{{this.first_name}}</td>
+              <td>{{this.last_name}}</td>
+              <td>{{this.email}}</td>
+              <td>{{this.specialization}}</td>
+              <td>{{this.availability}}</td>
+              <td>
+                <form
+                  action="/admin/delete-doctor/{{this.id}}"
+                  method="POST"
+                  style="display:inline;"
+                >
+                  <button
+                    type="submit"
+                    class="btn btn-danger btn-sm"
+                  >Delete</button>
+                </form>
+                <a
+                  href="/admin/update-doctor/{{this.id}}"
+                  class="btn btn-warning btn-sm"
+                >Update</a>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+
+      <!-- View Appointments -->
+      <h2>View Appointments</h2>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Patient Name</th>
+            <th>Doctor Name</th>
+            <th>Appointment Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each appointments}}
+            <!-- Assuming 'appointments' is passed from the server -->
+            <tr>
+              <td>{{this.patient_name}}</td>
+              <td>{{this.doctor_name}}</td>
+              <td>{{this.date}}</td>
+              <td>{{this.status}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+  </body>
+</html>
